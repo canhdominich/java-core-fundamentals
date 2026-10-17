@@ -22,7 +22,7 @@ public final class InMemoryCompiler {
     public static byte[] compile(String className, String source, int release) {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         if (compiler == null) {
-            throw new IllegalStateException("This is a JRE without javac: install a JDK");
+            throw new IllegalStateException("This runtime has no compiler module (jdk.compiler): install a JDK");
         }
         StandardJavaFileManager standard = compiler.getStandardFileManager(null, null, null);
         Map<String, ByteArrayOutputStream> output = new HashMap<>();

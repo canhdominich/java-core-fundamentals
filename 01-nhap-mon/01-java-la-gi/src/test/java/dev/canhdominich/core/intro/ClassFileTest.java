@@ -37,7 +37,7 @@ class ClassFileTest {
     }
 
     @Test
-    void javacIsPartOfTheJdk() {
+    void theRuntimeProvidesTheCompilerApi() {
         assertThat(javax.tools.ToolProvider.getSystemJavaCompiler()).isNotNull();
     }
 
