@@ -1,33 +1,63 @@
 public class Trace {
     public static void main(String[] args) {
-        Animal a = new Dog("Rex");
-        Animal b = new Animal("Tom");
-        System.out.println(a.sound());
-        System.out.println(b.sound());
+        Card a = new GoldCard("An");
+        Card b = new Card("Binh");
+        a.earn(10);
+        b.earn(10);
+        System.out.println(a.getPoints());
+        System.out.println(b.getPoints());
+        // Từ dòng này a trỏ sang object của b
         a = b;
-        System.out.println(a.sound());
+        a.earn(5);
+        System.out.println(b.getPoints());
     }
 }
 
-class Animal {
-    private final String name;
+class Card {
+    private final String owner;
+    private int points;
 
-    Animal(String name) {
-        this.name = name;
+    Card(String owner) {
+        this.owner = owner;
     }
 
-    String sound() {
-        return "...";
+    int multiplier() {
+        return 1;
+    }
+
+    String tier() {
+        return "basic";
+    }
+
+    boolean earn(int amount) {
+        if (amount <= 0) {
+            return false;
+        }
+        points = points + amount * multiplier();
+        return true;
+    }
+
+    int getPoints() {
+        return points;
+    }
+
+    String describe() {
+        return owner + " (" + tier() + ") has " + points + " points";
     }
 }
 
-class Dog extends Animal {
-    Dog(String name) {
-        super(name);
+class GoldCard extends Card {
+    GoldCard(String owner) {
+        super(owner);
     }
 
     @Override
-    String sound() {
-        return "woof";
+    int multiplier() {
+        return 2;
+    }
+
+    @Override
+    String tier() {
+        return "gold";
     }
 }

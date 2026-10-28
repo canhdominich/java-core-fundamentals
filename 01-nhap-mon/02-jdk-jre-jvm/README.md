@@ -79,3 +79,7 @@ mvn clean
 | `javac` không chạy được nhưng `mvn` vẫn biên dịch | Runtime chỉ có module trình biên dịch, không có lệnh `javac` | Cài gói JDK (ví dụ `openjdk-17-jdk`), kiểm tra `javac -version` |
 | `JitWarmup` quá chậm | Chế độ `-Xint` chạy 300 triệu bước bằng thông dịch | Đặt `-Dmain.arg=100000000` |
 | `VersionMatrix` báo không tìm thấy lệnh java | Đường dẫn truyền vào sai | Chạy `which -a java` hoặc `update-alternatives --list java` để lấy đường dẫn đúng |
+
+## Thư mục lesson
+
+`lesson/` chứa các chương trình đơn lẻ mà bài học trên nền tảng dùng, mỗi file chạy độc lập bằng `java TênFile.java` (JDK 17 trở lên): `JvmReport`, `MachineCheck`, `ToolBox`, `Warmup`.

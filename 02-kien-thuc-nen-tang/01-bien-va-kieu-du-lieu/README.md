@@ -76,3 +76,7 @@ mvn clean
 |---|---|---|
 | Thông báo `NullPointerException` hiện `<local1>` thay vì tên biến | Mã biên dịch không có thông tin gỡ lỗi | Biên dịch với `-g` (Maven bật mặc định) |
 | `ScopeAndVar` báo `no compiler` | Chạy bằng runtime không có module trình biên dịch | Cài JDK và kiểm tra `javac -version` |
+
+## Thư mục lesson
+
+`lesson/` chứa các chương trình đơn lẻ mà bài học trên nền tảng dùng, mỗi file chạy độc lập bằng `java TênFile.java` (JDK 17 trở lên): `Breakages`, `Casts`, `DailyTotal`, `Factorial`, `Money`, `Overflow`, `Receipt`, `RefDemo`, `Selfcheck`, `TillCheck`, `Trace`.

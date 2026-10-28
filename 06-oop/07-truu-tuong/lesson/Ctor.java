@@ -1,23 +1,23 @@
 public class Ctor {
     public static void main(String[] args) {
-        new Child();
+        new GoldCard("Binh");
     }
 }
 
-abstract class Parent {
-    Parent() {
-        System.out.println("Parent constructor");
+abstract class Card {
+    Card(String owner) {
+        System.out.println("Card constructor");
     }
 
-    abstract void work();
+    abstract int multiplier();
 }
 
-class Child extends Parent {
-    Child() {
-        System.out.println("Child constructor");
+class GoldCard extends Card {
+    GoldCard(String owner) {
+        super(owner);
+        System.out.println("GoldCard constructor");
     }
 
     @Override
-    void work() {
-    }
+    int multiplier() { return 2; }
 }

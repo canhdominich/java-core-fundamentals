@@ -1,49 +1,69 @@
 public class Selfcheck {
     public static void main(String[] args) {
-        System.out.println(new PercentDiscount(20).line(5000));
-        System.out.println(new Noisy().line(1));
+        // Bài 1
+        GoldCard gold = new GoldCard("Binh");
+        gold.earn(7);
+        System.out.println(gold.describe());
+        // Tự kiểm tra câu 2
+        Card c = new PartnerCard("Chi");
+        c.earn(4);
+        System.out.println(c.describe());
+        // Bài 3 sau khi sửa
+        Card p = new PartnerCard("Chi");
+        p.earn(5);
+        System.out.println(p.describe());
+        // Tự kiểm tra câu 3
+        NoisyCard n = new NoisyCard("Z");
+        n.earn(2);
+        System.out.println(n.describe());
+        // Tự kiểm tra câu 4 sau khi sửa
+        System.out.println(new GoldCard("An").earn(0) + " " + new GoldCard("An").earn(3));
     }
 }
 
-abstract class Discount {
-    abstract long apply(long price);
+abstract class Card {
+    private final String owner;
+    private int points;
 
-    abstract String name();
+    Card(String owner) { this.owner = owner; }
 
-    final String line(long price) {
-        return name() + ": " + apply(price);
+    abstract int multiplier();
+
+    abstract String tier();
+
+    final boolean earn(int amount) {
+        if (amount <= 0) { return false; }
+        points = points + amount * multiplier();
+        return true;
     }
+
+    final String describe() { return owner + " (" + tier() + ") has " + points + " points"; }
 }
 
-class PercentDiscount extends Discount {
-    private final int percent;
-
-    PercentDiscount(int percent) {
-        this.percent = percent;
-    }
-
-    @Override
-    long apply(long price) {
-        return price - price * percent / 100;
-    }
-
-    @Override
-    String name() {
-        return percent + " percent";
-    }
+class GoldCard extends Card {
+    GoldCard(String owner) { super(owner); }
+    @Override int multiplier() { return 2; }
+    @Override String tier() { return "gold"; }
 }
 
-class Noisy extends Discount {
+class PartnerCard extends Card {
+    PartnerCard(String owner) { super(owner); }
+    @Override int multiplier() { return 3; }
+    @Override String tier() { return "partner"; }
+}
+
+class NoisyCard extends Card {
+    NoisyCard(String owner) { super(owner); }
+
     @Override
-    long apply(long price) {
-        // In ra để thấy thứ tự gọi
-        System.out.print("A ");
-        return price;
+    int multiplier() {
+        System.out.print("M ");
+        return 1;
     }
 
     @Override
-    String name() {
-        System.out.print("N ");
-        return "x";
+    String tier() {
+        System.out.print("T ");
+        return "noisy";
     }
 }

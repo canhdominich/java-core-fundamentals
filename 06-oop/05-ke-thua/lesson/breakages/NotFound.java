@@ -1,29 +1,30 @@
-class Animal {
-    private final String name;
+class Card {
+    private final String owner;
+    private int points;
 
-    Animal(String name) {
-        this.name = name;
+    Card(String owner) {
+        this.owner = owner;
     }
 
-    String sound() {
-        return "...";
+    String tier() {
+        return "basic";
     }
 }
 
 
-class Dog extends Animal {
-    Dog(String name) {
-        super(name);
+class GoldCard extends Card {
+    GoldCard(String owner) {
+        super(owner);
     }
 
-    String fetch() {
-        return "fetch";
+    String badge() {
+        return "gold";
     }
 }
 
 class Use {
     void run() {
-        Animal pet = new Dog("Rex");
-        pet.fetch();
+        Card card = new GoldCard("Binh");
+        card.badge();
     }
 }

@@ -1,32 +1,32 @@
 import java.util.List;
 import java.util.Set;
 
-public class CouponsFixed {
+public class MembersFixed {
     public static void main(String[] args) {
-        Coupon a = new Coupon("TEA10");
-        Coupon b = new Coupon("TEA10");
+        Card a = new Card("An");
+        Card b = new Card("An");
         System.out.println(a.equals(b));
         System.out.println(List.of(a).contains(b));
         System.out.println(Set.of(a).contains(b));
     }
 }
 
-class Coupon {
-    private final String code;
+class Card {
+    private final String owner;
 
-    Coupon(String code) {
-        this.code = code;
+    Card(String owner) {
+        this.owner = owner;
     }
 
     @Override
     public boolean equals(Object o) {
         // Kiểm tra kiểu trước, rồi so sánh nội dung
-        return o instanceof Coupon other && code.equals(other.code);
+        return o instanceof Card other && owner.equals(other.owner);
     }
 
     @Override
     public int hashCode() {
         // Cùng dữ liệu với equals để HashSet tìm đúng ngăn
-        return code.hashCode();
+        return owner.hashCode();
     }
 }

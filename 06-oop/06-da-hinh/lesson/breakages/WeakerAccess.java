@@ -1,19 +1,12 @@
-class Discount {
-    long apply(long price) {
-        return price;
+class OpenCard {
+    public int multiplier() {
+        return 1;
     }
 }
 
-
-class Pub {
-    public long apply(long price) {
-        return price;
-    }
-}
-
-class Half extends Pub {
+class GoldOpenCard extends OpenCard {
     @Override
-    long apply(long price) {
-        return price / 2;
+    int multiplier() {
+        return 2;
     }
 }

@@ -1,24 +1,24 @@
 public class Trap {
     public static void main(String[] args) {
-        new Dog();
+        new GoldCard();
     }
 }
 
-class Animal {
-    Animal() {
-        System.out.println("constructor sees: " + sound());
+class Card {
+    Card() {
+        System.out.println("constructor sees: " + tier());
     }
 
-    String sound() {
-        return "...";
+    String tier() {
+        return "basic";
     }
 }
 
-class Dog extends Animal {
-    private String voice = "woof";
+class GoldCard extends Card {
+    private String label = "gold";
 
     @Override
-    String sound() {
-        return voice;
+    String tier() {
+        return label;
     }
 }

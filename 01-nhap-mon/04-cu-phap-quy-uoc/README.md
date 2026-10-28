@@ -77,3 +77,7 @@ mvn clean
 |---|---|---|
 | Mã băm trong `CommentsDemo` khác bài | Phiên bản JDK khác sinh bytecode hơi khác | So quan hệ giữa các mã băm trong cùng một lần chạy, không so giá trị tuyệt đối |
 | `NamingDemo` in `compiles? ... -> true` cho tên sai quy ước | Trình biên dịch không kiểm tra quy ước | Dùng công cụ kiểm tra phong cách như Checkstyle trong dự án thật |
+
+## Thư mục lesson
+
+`lesson/` chứa các chương trình đơn lẻ mà bài học trên nền tảng dùng, mỗi file chạy độc lập bằng `java TênFile.java` (JDK 17 trở lên): `GateDesk`, `NameCheck`, `PriceDesk`, `TicketBug`, `TicketGate`.

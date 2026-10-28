@@ -147,3 +147,7 @@ Cờ `-v` xóa luôn volume dữ liệu, kể cả bảng `big_table`.
 | `Table 'shop.big_table' doesn't exist` | Chưa tạo dữ liệu mẫu | Chạy `LargeResult` với `-Dmain.arg=seed` |
 | `LargeResult default` không lỗi bộ nhớ | Heap lớn hơn dữ liệu | Giữ `-Djvm.heap=-Xmx64m` |
 | `Could not find a valid Docker environment` khi `mvn test` | Docker chưa chạy | Bật Docker rồi chạy lại |
+
+## Thư mục lesson
+
+`lesson/` chứa các chương trình đơn lẻ mà bài học trên nền tảng dùng, mỗi file chạy độc lập bằng `java TênFile.java` (JDK 17 trở lên): `AddProduct`, `ErrorTour`, `Extras`, `LoginDemo`, `ProductStore`, `Search`, `ShopCrud`. Các chương trình JDBC cần MySQL đang chạy theo hướng dẫn ở phần yêu cầu môi trường của bài.

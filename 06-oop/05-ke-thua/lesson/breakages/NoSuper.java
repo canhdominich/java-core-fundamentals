@@ -1,17 +1,18 @@
-class Animal {
-    private final String name;
+class Card {
+    private final String owner;
+    private int points;
 
-    Animal(String name) {
-        this.name = name;
+    Card(String owner) {
+        this.owner = owner;
     }
 
-    String sound() {
-        return "...";
+    String tier() {
+        return "basic";
     }
 }
 
 
-class Dog extends Animal {
-    Dog(String name) {
+class GoldCard extends Card {
+    GoldCard(String owner) {
     }
 }

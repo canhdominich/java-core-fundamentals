@@ -2,6 +2,15 @@ import java.math.BigDecimal;
 import java.sql.*;
 
 public class Shop {
+    static void show(Connection c, String sql) throws SQLException {
+        try (Statement st = c.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+            // Hàm phụ chỉ để in bảng: mỗi hàng in hai cột đầu của câu SELECT
+            while (rs.next()) {
+                System.out.println("  " + rs.getString(1) + "  " + rs.getString(2));
+            }
+        }
+    }
+
     public static void main(String[] args) throws SQLException {
         try (Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3307/shop", "app", "app_pw")) {
             // tắt tự commit để các lệnh sau nằm trong một giao dịch
@@ -28,6 +37,7 @@ public class Shop {
                     c.rollback();
                     System.out.println("step 3: rolled back");
                 }
+                show(c, "SELECT owner, balance FROM account ORDER BY id");
             }
             try (PreparedStatement ps = c.prepareStatement("INSERT INTO product(sku, name, price) VALUES (?, ?, 5.00)")) {
                 for (String sku : new String[]{"B-1", "B-2", "B-3"}) {

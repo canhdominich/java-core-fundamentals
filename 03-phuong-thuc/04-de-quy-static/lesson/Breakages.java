@@ -55,5 +55,6 @@ public class Breakages {
         System.out.println("4: " + messages("class A { void work() { } static void run() { work(); } }"));
         System.out.println("5: " + messages("class A { static A self() { return this; } }"));
         System.out.println("6: " + messages("class A { static int total = 3; int read() { return total; } }"));
+        System.out.println("7: " + messages("class A { int height; static void reset() { height = 0; } }"));
     }
 }

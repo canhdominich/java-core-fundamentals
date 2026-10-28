@@ -8,27 +8,27 @@ public class Selfcheck {
 
     public static void main(String[] args) {
         System.out.println(f(5) + " " + f(6));
-        Order a = new Order(2);
-        System.out.println(Order.created);
-        Order b = new Order(5);
-        System.out.println(Order.created);
-        Order.reset(); // đặt lại bảng đếm chung về 0
-        System.out.println(Order.created);
-        Order c = new Order(1);
-        System.out.println(Order.created + " " + a.qty + " " + c.qty);
+        Tower a = new Tower(4);
+        System.out.println(Tower.built);
+        Tower b = new Tower(2);
+        System.out.println(Tower.built);
+        Tower.reset(); // đặt lại bảng đếm chung về 0
+        System.out.println(Tower.built);
+        Tower c = new Tower(3);
+        System.out.println(Tower.built + " " + a.height + " " + b.height + " " + c.height);
     }
 }
 
-class Order {
-    static int created;
-    int qty;
+class Tower {
+    static int built;
+    int height;
 
-    Order(int qty) {
-        this.qty = qty;
-        created++;
+    Tower(int height) {
+        this.height = height;
+        built++;
     }
 
     static void reset() {
-        created = 0;
+        built = 0;
     }
 }

@@ -2,61 +2,97 @@ import java.util.List;
 
 public class Selfcheck {
     public static void main(String[] args) {
-        Discount d = new PercentDiscount(20);
-        System.out.println(d.apply(5000) + " " + d.name());
-        long price = 5000;
-        for (Discount rule : List.of(new PercentDiscount(20), new FixedDiscount(1000))) {
-            price = rule.apply(price);
+        Card c = new GoldCard("X");
+        c.earn(3);
+        System.out.println(c.describe());
+
+        List<Card> cards = List.of(new Card("An"), new GoldCard("Binh"), new PartnerCard("Chi"));
+        for (Card card : cards) {
+            card.earn(2);
+            card.earn(3);
         }
-        System.out.println(price);
-        Discount h = new HalfDiscount();
-        System.out.println(h.apply(100));
+        for (Card card : cards) {
+            System.out.println(card.describe());
+        }
+
+        Card typo = new TypoCard("Z");
+        typo.earn(5);
+        System.out.println(typo.describe());
+
+        for (Card card : List.of(new Card("An"), new GoldCard("Binh"), new PartnerCard("Chi"))) {
+            card.earn(3);
+            System.out.println(card.describe());
+        }
     }
 }
 
-class Discount {
-    long apply(long price) {
-        return price;
+class Card {
+    private final String owner;
+    private int points;
+
+    Card(String owner) {
+        this.owner = owner;
     }
 
-    String name() {
-        return "none";
+    int multiplier() {
+        return 1;
+    }
+
+    String tier() {
+        return "basic";
+    }
+
+    boolean earn(int amount) {
+        if (amount <= 0) {
+            return false;
+        }
+        points = points + amount * multiplier();
+        return true;
+    }
+
+    String describe() {
+        return owner + " (" + tier() + ") has " + points + " points";
     }
 }
 
-class PercentDiscount extends Discount {
-    private final int percent;
-
-    PercentDiscount(int percent) {
-        this.percent = percent;
+class GoldCard extends Card {
+    GoldCard(String owner) {
+        super(owner);
     }
 
     @Override
-    long apply(long price) {
-        return price - price * percent / 100;
+    int multiplier() {
+        return 2;
     }
 
     @Override
-    String name() {
-        return percent + " percent";
+    String tier() {
+        return "gold";
     }
 }
 
-class FixedDiscount extends Discount {
-    private final long amount;
-
-    FixedDiscount(long amount) {
-        this.amount = amount;
+class PartnerCard extends Card {
+    PartnerCard(String owner) {
+        super(owner);
     }
 
     @Override
-    long apply(long price) {
-        return Math.max(0, price - amount);
+    int multiplier() {
+        return 3;
+    }
+
+    @Override
+    String tier() {
+        return "partner";
     }
 }
 
-class HalfDiscount extends Discount {
-    long apply(int price) {
-        return price / 2;
+class TypoCard extends Card {
+    TypoCard(String owner) {
+        super(owner);
+    }
+
+    int multipler() {
+        return 3;
     }
 }

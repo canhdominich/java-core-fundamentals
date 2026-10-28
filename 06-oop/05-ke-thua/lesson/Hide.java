@@ -1,23 +1,23 @@
 public class Hide {
     public static void main(String[] args) {
-        Animal pet = new Dog();
-        System.out.println(pet.label + " " + pet.sound() + " " + ((Dog) pet).label);
+        Card card = new GoldCard();
+        System.out.println(card.label + " " + card.tier() + " " + ((GoldCard) card).label);
     }
 }
 
-class Animal {
-    String label = "animal";
+class Card {
+    String label = "card";
 
-    String sound() {
-        return "...";
+    String tier() {
+        return "basic";
     }
 }
 
-class Dog extends Animal {
-    String label = "dog";
+class GoldCard extends Card {
+    String label = "gold";
 
     @Override
-    String sound() {
-        return "woof";
+    String tier() {
+        return "gold";
     }
 }

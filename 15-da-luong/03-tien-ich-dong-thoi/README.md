@@ -64,3 +64,7 @@ mvn clean
 | Triệu chứng | Nguyên nhân | Cách xử lý |
 |---|---|---|
 | `mvn: command not found` | Maven chưa có trong PATH | Cài Maven 3.9 trở lên và mở lại terminal |
+
+## Thư mục lesson
+
+`lesson/` chứa các chương trình đơn lẻ mà bài học trên nền tảng dùng, mỗi file chạy độc lập bằng `java TênFile.java` (JDK 17 trở lên): `Atoms`, `Brewery`, `CafeLine`, `Challenge`, `Exercise3`, `Latch`, `More`, `PriceTotal`, `Selfcheck`, `Timeouts`.

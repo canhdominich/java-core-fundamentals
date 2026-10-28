@@ -132,3 +132,7 @@ mvn clean
 | `autocommit on` mất rất lâu | Mỗi dòng là một commit ghi đĩa | Bình thường, đó chính là điều bài muốn chứng minh; giảm `ROWS` nếu cần |
 | `DeadlockDemo` không có nạn nhân | Hai luồng không giữ khóa đầu cùng lúc | Chạy lại; chốt `CountDownLatch` thường đảm bảo giao nhau |
 | `Could not find a valid Docker environment` khi `mvn test` | Docker chưa chạy | Bật Docker rồi chạy lại |
+
+## Thư mục lesson
+
+`lesson/` chứa các chương trình đơn lẻ mà bài học trên nền tảng dùng, mỗi file chạy độc lập bằng `java TênFile.java` (JDK 17 trở lên): `BatchInsert`, `BatchTimer`, `ErrorTour`, `ImportProducts`, `NoTx`, `Shop`, `Transfer`, `Wallet`. Các chương trình JDBC cần MySQL đang chạy theo hướng dẫn ở phần yêu cầu môi trường của bài.

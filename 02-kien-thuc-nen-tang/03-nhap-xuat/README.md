@@ -76,3 +76,7 @@ mvn clean
 |---|---|---|
 | `SafeInput` không đọc được dữ liệu từ ống | Chạy bằng `mvn` không có `-q` làm lẫn dòng log | Thêm `-q` hoặc chạy trực tiếp bằng `java -cp target/classes ...` |
 | Số in ra dùng dấu phẩy thập phân | Locale của hệ điều hành là tiếng Việt hoặc Đức | Truyền `Locale.ROOT` hoặc `Locale.US` vào `String.format` |
+
+## Thư mục lesson
+
+`lesson/` chứa các chương trình đơn lẻ mà bài học trên nền tảng dùng, mỗi file chạy độc lập bằng `java TênFile.java` (JDK 17 trở lên): `BadInput`, `Breakages`, `Chain`, `Checkout`, `Deeper`, `NameBug`, `PrintDemo`, `ReceiptPrinter`, `Rows`, `Selfcheck`, `Trace`.

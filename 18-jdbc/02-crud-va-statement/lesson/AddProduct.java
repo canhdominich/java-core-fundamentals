@@ -2,6 +2,15 @@ import java.math.BigDecimal;
 import java.sql.*;
 
 public class AddProduct {
+    static void show(Connection c, String sql) throws SQLException {
+        try (Statement st = c.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+            // Hàm phụ chỉ để in bảng: mỗi hàng in hai cột đầu của câu SELECT
+            while (rs.next()) {
+                System.out.println("  " + rs.getString(1) + "  " + rs.getString(2));
+            }
+        }
+    }
+
     public static void main(String[] args) throws SQLException {
         // không liệt kê cột id, để MySQL tự đặt
         String insert = "INSERT INTO product(sku, name, price) VALUES (?, ?, ?)";
@@ -27,6 +36,8 @@ public class AddProduct {
                     System.out.println("read back " + rs.getString("name") + " " + rs.getBigDecimal("price"));
                 }
             }
+            System.out.println("table product now:");
+            show(c, "SELECT name, price FROM product ORDER BY id");
         }
     }
 }

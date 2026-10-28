@@ -67,18 +67,31 @@ public class Compare {
         return counter.get();
     }
 
+    static final int RUNS = 20;
+
     public static void main(String[] args) throws InterruptedException {
         int expected = 4 * 200_000;
-        int plainLost = 0, volatileLost = 0, wrongLost = 0;
-        for (int i = 0; i < 5; i++) {
-            if (run(Plain::new, 4, 200_000) < expected) plainLost++;
-            if (run(Volatile::new, 4, 200_000) < expected) volatileLost++;
-            if (run(WrongLock::new, 4, 200_000) < expected) wrongLost++;
+        int[] lostIn = new int[3];
+        int[] last = new int[3];
+        boolean aboveExpected = false;
+        List<Supplier<Counter>> kinds = List.of(Plain::new, Volatile::new, WrongLock::new);
+        for (int round = 0; round < RUNS; round++) {
+            for (int k = 0; k < kinds.size(); k++) {
+                int total = run(kinds.get(k), 4, 200_000);
+                if (total < expected) lostIn[k]++;
+                if (total > expected) aboveExpected = true;
+                last[k] = total;
+            }
         }
-        System.out.println("expected " + expected);
-        System.out.println("synchronized method " + run(Locked::new, 4, 200_000));
-        System.out.println("plain int lost updates in " + plainLost + " of 5 runs");
-        System.out.println("volatile int lost updates in " + volatileLost + " of 5 runs");
-        System.out.println("new Object() as lock lost updates in " + wrongLost + " of 5 runs");
+        int exact = run(Locked::new, 4, 200_000);
+        System.out.println("synchronized method is exactly " + expected + ": " + (exact == expected));
+        System.out.println("no variant ever went above " + expected + ": " + !aboveExpected);
+        System.out.println("plain int lost updates at least once: " + (lostIn[0] > 0));
+        System.out.println("volatile int lost updates at least once: " + (lostIn[1] > 0));
+        System.out.println("new Object() as lock lost updates at least once: " + (lostIn[2] > 0));
+        System.out.println("--- numbers below change on every run ---");
+        System.out.println("plain int lost updates in " + lostIn[0] + " of " + RUNS + " runs, last total " + last[0]);
+        System.out.println("volatile int lost updates in " + lostIn[1] + " of " + RUNS + " runs, last total " + last[1]);
+        System.out.println("new Object() as lock lost updates in " + lostIn[2] + " of " + RUNS + " runs, last total " + last[2]);
     }
 }

@@ -74,3 +74,7 @@ mvn clean
 | `Error: Could not find or load main class Hello` | Sai tên lớp, sai thư mục hiện tại hoặc thiếu `-cp` | Đứng đúng thư mục chứa `Hello.class` và chạy `java -cp . Hello` |
 | Thông báo lỗi `javac` bằng tiếng khác | Hệ điều hành đặt ngôn ngữ khác | Chạy `javac -J-Duser.language=en Hello.java` |
 | `LaunchModes` không tìm thấy `Hello.java` | Chạy không phải ở thư mục dự án | Chạy `mvn` ngay trong thư mục `03-hello-world` |
+
+## Thư mục lesson
+
+`lesson/` chứa các chương trình đơn lẻ mà bài học trên nền tảng dùng, mỗi file chạy độc lập bằng `java TênFile.java` (JDK 17 trở lên): `Boom`, `Door`, `Hello`, `Welcome`.

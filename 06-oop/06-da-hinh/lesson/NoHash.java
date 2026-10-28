@@ -3,21 +3,21 @@ import java.util.Set;
 
 public class NoHash {
     public static void main(String[] args) {
-        Set<Coupon> set = new HashSet<>();
-        set.add(new Coupon("TEA10"));
-        System.out.println(set.contains(new Coupon("TEA10")));
+        Set<Card> set = new HashSet<>();
+        set.add(new Card("An"));
+        System.out.println(set.contains(new Card("An")));
     }
 }
 
-class Coupon {
-    private final String code;
+class Card {
+    private final String owner;
 
-    Coupon(String code) {
-        this.code = code;
+    Card(String owner) {
+        this.owner = owner;
     }
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof Coupon other && code.equals(other.code);
+        return o instanceof Card other && owner.equals(other.owner);
     }
 }

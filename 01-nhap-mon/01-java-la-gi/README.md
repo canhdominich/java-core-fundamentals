@@ -73,3 +73,7 @@ mvn clean
 | `javac` hoặc `ToolProvider` báo không có trình biên dịch | Máy chỉ cài JRE, không có JDK | Cài JDK 17 trở lên và kiểm tra `javac -version` |
 | `release version 17 not supported` | JDK trên máy cũ hơn 17 | Cài JDK 17 trở lên |
 | Chữ tiếng Việt hiện sai trong terminal | Terminal không dùng UTF-8 | Đặt terminal sang UTF-8; pom đã ép `-Dfile.encoding=UTF-8` cho JVM |
+
+## Thư mục lesson
+
+`lesson/` chứa các chương trình đơn lẻ mà bài học trên nền tảng dùng, mỗi file chạy độc lập bằng `java TênFile.java` (JDK 17 trở lên): `ClassHeader`, `FileHeader`, `Greeter`, `OsFacts`, `PassportCheck`, `ShipCheck`.

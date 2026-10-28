@@ -20,10 +20,9 @@ public class SalesCounter {
         b.start();
         a.join();
         b.join();
-        System.out.println("expected 200000");
-        System.out.println("safe " + safe);
-        // Số này khác nhau giữa các lần chạy
-        System.out.println("unsafe " + unsafe);
-        System.out.println("unsafe at most expected " + (unsafe <= 200_000));
+        System.out.println("safe is exactly 200000: " + (safe == 200_000));
+        System.out.println("unsafe never above 200000: " + (unsafe <= 200_000));
+        // Số này có thể bằng 200000 hoặc nhỏ hơn, khác nhau giữa các lần chạy
+        System.out.println("unsafe total in this run: " + unsafe);
     }
 }

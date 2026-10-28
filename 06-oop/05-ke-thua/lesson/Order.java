@@ -1,23 +1,23 @@
 public class Order {
     public static void main(String[] args) {
-        new Puppy();
+        new PlatinumCard();
     }
 }
 
-class Animal {
-    Animal() {
-        System.out.println("Animal");
+class Card {
+    Card() {
+        System.out.println("Card");
     }
 }
 
-class Dog extends Animal {
-    Dog() {
-        System.out.println("Dog");
+class GoldCard extends Card {
+    GoldCard() {
+        System.out.println("GoldCard");
     }
 }
 
-class Puppy extends Dog {
-    Puppy() {
-        System.out.println("Puppy");
+class PlatinumCard extends GoldCard {
+    PlatinumCard() {
+        System.out.println("PlatinumCard");
     }
 }
