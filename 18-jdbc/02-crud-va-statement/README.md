@@ -2,152 +2,43 @@
 
 Mã nguồn đi kèm bài học **CRUD và các loại Statement** (chương 18: Kết nối cơ sở dữ liệu JDBC) của khóa Java: Nền tảng lập trình, OOP, Collections và JDBC.
 
-Bạn sẽ tự chạy: bốn thao tác CRUD với `PreparedStatement`, SQL injection thật trên MySQL (kể cả đòn xếp chồng lệnh), so sánh ba chế độ chuẩn bị câu lệnh bằng thời gian, giá trị trả về của `executeUpdate`, bẫy `ORDER BY ?`, đọc 400.000 dòng với heap 64 MB, và gọi stored procedure bằng `CallableStatement`.
-
 ## Yêu cầu môi trường
 
-| Thành phần | Phiên bản đã kiểm chứng | Ghi chú |
+| Thành phần | Phiên bản | Ghi chú |
 |---|---|---|
 | JDK | 17 trở lên | `java -version` |
-| Maven | 3.9 trở lên | `mvn -v` |
-| Docker + Docker Compose | bất kỳ bản gần đây | MySQL cho demo và Testcontainers cho test |
-| MySQL | 8.4 (image `mysql:8.4`) | |
-| MySQL Connector/J | 26.7.0 | khai báo trong `pom.xml` |
+| Docker | bản gần đây | chạy MySQL 8.4 bằng `docker compose` |
+| MySQL Connector/J | 26.7.0 | tải jar ở phần dưới |
 
-## Cấu trúc
+## Cách chạy
 
-```text
-03-crud-va-statement/
-  docker-compose.yml           MySQL 8.4, database shop, user app (cổng 3307)
-  pom.xml                      thuộc tính main.class, main.arg, jvm.heap cho exec:exec
-  src/main/java/dev/canhdominich/jdbc/crud/
-    DbConfig, Db               cấu hình kết nối, mở kết nối, tạo schema
-    Product.java               record ánh xạ một dòng bảng product
-    CrudDemo.java              insert, findById, search, update, delete
-    SqlInjectionDemo.java      đăng nhập nối chuỗi và đăng nhập PreparedStatement; xếp chồng lệnh
-    PreparedModes.java         client-side, server-side, server-side có cache: 5000 truy vấn
-    AffectedRows.java          giá trị executeUpdate trả về với và không có useAffectedRows
-    OrderByAndIn.java          ORDER BY ?, whitelist cột sắp xếp, danh sách IN
-    LargeResult.java           đọc 400.000 dòng: default, stream, cursor, và bị chặn khi đang stream
-    StoredProcedureDemo.java   CallableStatement với tham số IN và OUT
-  src/test/java/dev/canhdominich/jdbc/crud/
-    CrudAndStatementsTest.java 8 test
-```
-
-## Chạy MySQL
+Mỗi file trong `lesson/` là một chương trình đơn lẻ, chạy thẳng từ mã nguồn, không cần Maven hay biên dịch riêng.
 
 ```bash
-docker compose up -d
-docker compose ps
+cd lesson
+java -cp mysql-connector-j-26.7.0.jar TênFile.java
 ```
 
-Chờ `STATUS` là `healthy`. MySQL ở cổng 3307. Nếu bạn đang chạy lab khác dùng cùng cổng, chạy `docker compose down` ở lab đó trước. Biến môi trường mặc định: `JDBC_URL=jdbc:mysql://localhost:3307/shop`, `DB_USER=app`, `DB_PASSWORD=app_pw`.
+## Chuẩn bị MySQL
 
-## Chạy từng thí nghiệm
-
-Cú pháp chung: `mvn -q compile exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.<Lớp>`.
+Tải driver và bật MySQL (file `docker-compose.yml` nằm ở thư mục `18-jdbc/`, cổng 3307, database `shop`, user `app`, mật khẩu `app_pw`):
 
 ```bash
-mvn -q compile exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.CrudDemo
-mvn -q exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.SqlInjectionDemo
-mvn -q exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.PreparedModes
-mvn -q exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.AffectedRows
-mvn -q exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.OrderByAndIn
-mvn -q exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.StoredProcedureDemo
+curl -fLO https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/26.7.0/mysql-connector-j-26.7.0.jar
+cd .. && docker compose up -d && cd -
 ```
 
-`LargeResult` nhận chế độ qua `-Dmain.arg` và giới hạn heap qua `-Djvm.heap`:
+Chạy `bash reset.sh` trong `lesson/` để đặt lại các bảng về dữ liệu mẫu trước mỗi lần thử.
 
-```bash
-mvn -q exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.LargeResult -Dmain.arg=seed
-mvn -q exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.LargeResult -Dmain.arg=default -Djvm.heap=-Xmx64m
-mvn -q exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.LargeResult -Dmain.arg=stream -Djvm.heap=-Xmx64m
-mvn -q exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.LargeResult -Dmain.arg=cursor -Djvm.heap=-Xmx64m
-mvn -q exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.LargeResult -Dmain.arg=blocked
-```
+## Các file trong lesson/
 
-Bảng `big_table` do chế độ `seed` tạo, khoảng 400.000 dòng mỗi dòng 200 ký tự, chiếm vài chục MB trong volume của container.
+- `AddProduct.java`
+- `ErrorTour.java`
+- `Extras.java`
+- `LoginDemo.java`
+- `ProductStore.java`
+- `Search.java`
+- `ShopCrud.java`
+- `reset.sh`
 
-## Kết quả mong đợi
-
-Thời gian phụ thuộc máy bạn; quan hệ giữa các con số mới là điều cần nhìn.
-
-`SqlInjectionDemo`:
-
-```text
-login(an | hash-an)  concat=LOGGED_IN as USER  prepared=LOGGED_IN as USER
-login(an | wrong)  concat=denied  prepared=denied
-login(admin' --  | anything)  concat=LOGGED_IN as ADMIN  prepared=denied
-login(nobody | x' OR '1'='1)  concat=LOGGED_IN as ADMIN  prepared=denied
-stacked query with default URL: rejected SQLSyntaxErrorException SQLState=42000, audit_log exists = true
-stacked query with allowMultiQueries=true: query ran, audit_log exists = false
-```
-
-`PreparedModes` (5000 lần mở, chạy, đóng một `PreparedStatement`):
-
-```text
-default (client-side)                            5000 queries in ~3000 ms
-useServerPrepStmts=true                          5000 queries in ~3500-4000 ms
-useServerPrepStmts=true&cachePrepStmts=true      5000 queries in ~1500 ms
-```
-
-Đếm lệnh máy chủ nhận được trong ba chế độ trên (bật `general_log` trước khi chạy `PreparedModes`, mỗi chế độ chạy 5200 lần kể cả khởi động):
-
-```bash
-docker exec jdbc-lab-mysql mysql -uroot -proot_pw -e "SET GLOBAL log_output='TABLE'; TRUNCATE mysql.general_log; SET GLOBAL general_log='ON';"
-mvn -q exec:exec -Dmain.class=dev.canhdominich.jdbc.crud.PreparedModes
-docker exec jdbc-lab-mysql mysql -uroot -proot_pw -e "SET GLOBAL general_log='OFF'; SELECT thread_id, command_type, COUNT(*) n FROM mysql.general_log WHERE CONVERT(argument USING utf8mb4) LIKE '%FROM product WHERE sku%' OR command_type IN ('Prepare','Execute','Close stmt') GROUP BY thread_id, command_type ORDER BY thread_id, command_type; TRUNCATE mysql.general_log;"
-```
-
-Kết quả: chế độ mặc định chỉ có `Query` (5200); `useServerPrepStmts=true` có `Prepare`, `Execute`, `Close stmt` mỗi loại 5200; thêm `cachePrepStmts=true` chỉ còn `Prepare` 1 lần, `Execute` 5200 và không có `Close stmt`. Số liệu thời gian cao hơn bình thường khi bật log.
-
-`AffectedRows`:
-
-```text
-default: same value -> 1, new value -> 1, no such row -> 0
-useAffectedRows=true: same value -> 0, new value -> 1, no such row -> 0
-```
-
-`OrderByAndIn`: `ORDER BY ?` giữ nguyên thứ tự chèn `[Charger, Adapter, Battery]`, còn `ORDER BY price` cho `[Adapter, Battery, Charger]`.
-
-`LargeResult` với `-Xmx64m` và 400.000 dòng:
-
-```text
-default: SQLException message="Java heap space" cause=OutOfMemoryError
-stream: rows=400000 chars=80000000 time=~2200 ms
-cursor: rows=400000 chars=80000000 time=~3600-4100 ms
-```
-
-Chế độ `blocked` in `SQLState=S1000` với thông điệp `Streaming result set ... is still active. No statements may be issued when any streaming result sets are open ...`.
-
-`StoredProcedureDemo`: `count_products(15.00) = 1`, `count_products(5.00)  = 2`.
-
-## Chạy bộ test
-
-```bash
-mvn test
-```
-
-Kết quả mong đợi: `Tests run: 8, Failures: 0, Errors: 0`. Test tự khởi động MySQL riêng bằng Testcontainers nên cần Docker đang chạy.
-
-## Dọn dẹp
-
-```bash
-docker compose down -v
-mvn clean
-```
-
-Cờ `-v` xóa luôn volume dữ liệu, kể cả bảng `big_table`.
-
-## Lỗi thường gặp khi chạy lab
-
-| Triệu chứng | Nguyên nhân | Cách xử lý |
-|---|---|---|
-| `Bind for 0.0.0.0:3307 failed: port is already allocated` | Cổng 3307 đã bị chiếm | `MYSQL_PORT=3308 docker compose up -d` rồi `export JDBC_URL=jdbc:mysql://localhost:3308/shop` |
-| `Table 'shop.big_table' doesn't exist` | Chưa tạo dữ liệu mẫu | Chạy `LargeResult` với `-Dmain.arg=seed` |
-| `LargeResult default` không lỗi bộ nhớ | Heap lớn hơn dữ liệu | Giữ `-Djvm.heap=-Xmx64m` |
-| `Could not find a valid Docker environment` khi `mvn test` | Docker chưa chạy | Bật Docker rồi chạy lại |
-
-## Thư mục lesson
-
-`lesson/` chứa các chương trình đơn lẻ mà bài học trên nền tảng dùng, mỗi file chạy độc lập bằng `java TênFile.java` (JDK 17 trở lên): `AddProduct`, `ErrorTour`, `Extras`, `LoginDemo`, `ProductStore`, `Search`, `ShopCrud`. Các chương trình JDBC cần MySQL đang chạy theo hướng dẫn ở phần yêu cầu môi trường của bài.
+Mỗi chương trình được giải thích từng dòng trong bài học tương ứng trên nền tảng.

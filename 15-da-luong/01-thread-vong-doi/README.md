@@ -2,66 +2,35 @@
 
 Mã nguồn đi kèm bài học **Thread và vòng đời** (chương 15: Đa luồng) của khóa Java: Nền tảng lập trình, OOP, Collections và JDBC.
 
-Bạn sẽ tạo luồng bằng lớp con `Thread` và `Runnable`, thấy `run()` chạy trên luồng gọi còn `start()` chạy trên luồng mới, thấy gọi `start()` lần hai ném `IllegalThreadStateException`, quan sát cả sáu trạng thái `NEW`, `RUNNABLE`, `TIMED_WAITING`, `WAITING`, `BLOCKED`, `TERMINATED` trên một luồng, dùng `join` để thấy kết quả, dùng `interrupt` để đánh thức luồng đang ngủ và dừng vòng lặp hợp tác, và thấy ngoại lệ không bắt chỉ giết luồng của nó.
-
 ## Yêu cầu môi trường
 
-| Thành phần | Phiên bản đã kiểm chứng | Ghi chú |
+| Thành phần | Phiên bản | Ghi chú |
 |---|---|---|
 | JDK | 17 trở lên | `java -version` |
-| Maven | 3.9 trở lên | `mvn -v` |
 
-## Cấu trúc
+## Cách chạy
 
-```text
-01-thread-vong-doi/
-  pom.xml                       Maven thuần, release 17, JUnit và AssertJ cho test
-  src/main/java/dev/canhdominich/core/threads/lifecycle/
-    Creating.java               ba cách tạo luồng, start so với run, start hai lần, luồng nền
-    States.java                 đưa một luồng đi qua sáu trạng thái
-    Stopping.java               join, interrupt, dừng hợp tác, ngoại lệ không bắt
-    LifecycleDemo.java          chạy mọi ví dụ và các lỗi biên dịch
-    Javac.java                  biên dịch một chuỗi mã nguồn và trả thông báo lỗi
-  src/test/java/dev/canhdominich/core/threads/lifecycle/
-    LifecycleTest.java          chín test
-```
-
-## Chạy thí nghiệm
+Mỗi file trong `lesson/` là một chương trình đơn lẻ, chạy thẳng từ mã nguồn, không cần Maven hay biên dịch riêng.
 
 ```bash
-mvn -q compile exec:exec -Dmain.class=dev.canhdominich.core.threads.lifecycle.LifecycleDemo
+cd lesson
+java TênFile.java
 ```
 
-## Kết quả mong đợi
+## Các file trong lesson/
 
-Trên máy đã kiểm chứng (JDK 17.0.15), hai lần chạy liên tiếp cho cùng kết quả:
+- `Barista.java`
+- `Breakages.java`
+- `CafeBoard.java`
+- `Daemon.java`
+- `Ignored.java`
+- `Selfcheck.java`
+- `States.java`
+- `Station.java`
+- `Stop.java`
+- `Ticker.java`
+- `Trace.java`
+- `Wake.java`
+- `broken/`
 
-```text
-start vs run        = run() executed on main, start() executed on worker-1
-states              = [NEW, RUNNABLE, TIMED_WAITING, WAITING, BLOCKED, TERMINATED]
-interrupt sleeper   = caught InterruptedException with message 'sleep interrupted', interrupt flag inside catch false, state TERMINATED
-```
-
-## Chạy bộ test
-
-```bash
-mvn test
-```
-
-Kết quả mong đợi: `Tests run: 9, Failures: 0, Errors: 0`.
-
-## Dọn dẹp
-
-```bash
-mvn clean
-```
-
-## Lỗi thường gặp khi chạy lab
-
-| Triệu chứng | Nguyên nhân | Cách xử lý |
-|---|---|---|
-| `mvn: command not found` | Maven chưa có trong PATH | Cài Maven 3.9 trở lên và mở lại terminal |
-
-## Thư mục lesson
-
-`lesson/` chứa các chương trình đơn lẻ mà bài học trên nền tảng dùng, mỗi file chạy độc lập bằng `java TênFile.java` (JDK 17 trở lên): `Barista`, `Breakages`, `CafeBoard`, `Daemon`, `Ignored`, `Selfcheck`, `States`, `Station`, `Stop`, `Ticker`, `Trace`, `Wake`. Thư mục con: `broken/`.
+Mỗi chương trình được giải thích từng dòng trong bài học tương ứng trên nền tảng.
