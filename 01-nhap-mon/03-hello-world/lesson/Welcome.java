@@ -1,6 +1,6 @@
 public class Welcome {
     static String welcome(String name) {
-        return "Welcome to Cafe Gio, " + name + "!";
+        return "Welcome to Cafe Chu Tu, " + name + "!";
     }
 
     public static void main(String[] args) {
